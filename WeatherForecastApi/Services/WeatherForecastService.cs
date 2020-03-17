@@ -26,6 +26,7 @@ namespace WeatherForecastApi.Services
         public async Task<WeatherForecastViewModel> GetWeatherForecastDetail()
         {
             var now = DateTime.Now;
+            var hourNow = now.Hour;
             var nowStr = now.ToViDate3();
             var now_unix = now.DateTimeToUnixTimestamp();
 
@@ -36,21 +37,41 @@ namespace WeatherForecastApi.Services
             var todayWeatherDetail = await _fiveDaysWeatherDataRepository.ListAsync(new FiveDaysWeatherDataSpecification(nowStr, now_unix));
             var todayWeatherDetailVm = new List<TodayWeatherDetailViewModel>();
 
-            todayWeatherDetailVm.Add(new TodayWeatherDetailViewModel()
+            var todayWeatherDetailVmTemp = new TodayWeatherDetailViewModel()
             {
                 Time = $"Now",
                 Temp = Math.Round(currentWeather.temp),
                 Icon = currentWeather.icon
-            });
+            };
 
-            foreach (var item in todayWeatherDetail)
+            todayWeatherDetailVm.Add(todayWeatherDetailVmTemp);
+
+            for(int i = hourNow + 1; i < 24; i++)
             {
-                var timeStr = item.dt_txt;
-                var timeDate = timeStr.ToViDate3();
+                var hourTmp = $"{i}:00:00";
+                var dt_txtNowStr = $"{nowStr} {hourTmp}";
+                var item = todayWeatherDetail.Where(m => m.dt_txt.Contains(dt_txtNowStr)).FirstOrDefault();
 
-                if (timeDate.HasValue)
+                if(item == null)
                 {
-                    todayWeatherDetailVm.Add(new TodayWeatherDetailViewModel(item));
+                    todayWeatherDetailVm.Add(new TodayWeatherDetailViewModel()
+                    {
+                        Time = hourTmp,
+                        Temp = todayWeatherDetailVmTemp.Temp,
+                        Icon = todayWeatherDetailVmTemp.Icon
+                    });
+                }
+                else
+                {
+                    var todayWeatherDetailVmTemp2 = new TodayWeatherDetailViewModel()
+                    {
+                        Time = hourTmp,
+                        Temp = Math.Round(item.temp),
+                        Icon = item.icon
+                    };
+                    todayWeatherDetailVm.Add(todayWeatherDetailVmTemp2);
+
+                    todayWeatherDetailVmTemp = todayWeatherDetailVmTemp2;
                 }
             }
 

@@ -40,10 +40,10 @@ namespace WeatherForecastApi.ViewModels
 
         public CurrentWeatherViewModel(WeatherData weatherData)
         {
-            City = weatherData.name;
+            City = weatherData.name.ToUpper();
             Country = weatherData.country;
             Temp = Math.Round(weatherData.temp);
-            Description = weatherData.description;
+            Description = weatherData.description.ToUpper();
             Icon = weatherData.icon;
         }
 
