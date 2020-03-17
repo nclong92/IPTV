@@ -50,12 +50,7 @@ namespace WeatherForecastApi.Services
 
                 if (timeDate.HasValue)
                 {
-                    todayWeatherDetailVm.Add(new TodayWeatherDetailViewModel()
-                    {
-                        Time = timeDate.Value.ToViHour3(),
-                        Temp = Math.Round(item.temp),
-                        Icon = item.icon
-                    });
+                    todayWeatherDetailVm.Add(new TodayWeatherDetailViewModel(item));
                 }
             }
 
@@ -120,14 +115,7 @@ namespace WeatherForecastApi.Services
 
             return new WeatherForecastViewModel()
             {
-                CurrentWeather = new CurrentWeatherViewModel()
-                {
-                    City = currentWeather.name,
-                    Country = currentWeather.country,
-                    Temp = Math.Round(currentWeather.temp),
-                    Description = currentWeather.description,
-                    Icon = currentWeather.icon
-                },
+                CurrentWeather = new CurrentWeatherViewModel(currentWeather),
                 TodayWeatherDetail = todayWeatherDetailVm,
                 DayWeather = dayWeatherVm
             };
