@@ -26,10 +26,10 @@ namespace WeatherForecastApi.Controllers
 
             if(result == null)
             {
-                return ApiResult(ApiResultStatus.Failed, "Error: Cannot get weather. Please try again later.", result);
+                return Ok("Error: Cannot get weather. Please try again later.");
             }
 
-            return ApiResult(ApiResultStatus.Success, "", result);
+            return Ok(result);
         }
     }
 }

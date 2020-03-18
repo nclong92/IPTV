@@ -83,7 +83,7 @@ namespace WeatherForecastApi.Services
                 TempMin = Math.Round(currentWeather.temp_min)
             };
 
-            for (var date = now.Date; date < now.AddDays(7); date = date.AddDays(1))
+            for (var date = now.Date; date < now.AddDays(6); date = date.AddDays(1))
             {
                 var dt_unixDouble = now.DateTimeToUnixTimestamp();
                 var spec = new FiveDaysWeatherDataSpecification(date.ToViDate3(), dt_unixDouble);

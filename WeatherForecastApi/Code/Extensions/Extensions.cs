@@ -7,12 +7,12 @@ namespace WeatherForecastApi.Code.Extensions
 {
     public static class Extensions
     {
-        public static string ToImageUrl(this string image)
+        public static string ToWeatherIconUrl(this string image)
         {
             if (string.IsNullOrEmpty(image))
                 return string.Empty;
 
-            return $"{ApiSettings.ResourceServer}/{image}";
+            return $"{ApiSettings.ResourceServer}/{image}.png";
         }
     }
 }

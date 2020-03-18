@@ -32,7 +32,7 @@ namespace WeatherForecastApi.ViewModels
         {
             get
             {
-                return Icon.ToImageUrl();
+                return Icon.ToWeatherIconUrl();
             }
         }
 
@@ -64,7 +64,7 @@ namespace WeatherForecastApi.ViewModels
         {
             get
             {
-                return Icon.ToImageUrl();
+                return Icon.ToWeatherIconUrl();
             }
         }
     }
@@ -94,7 +94,7 @@ namespace WeatherForecastApi.ViewModels
         {
             get
             {
-                return Icon.ToImageUrl();
+                return Icon.ToWeatherIconUrl();
             }
         }
     }

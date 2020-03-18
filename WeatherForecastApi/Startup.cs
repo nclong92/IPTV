@@ -43,6 +43,7 @@ namespace WeatherForecastApi
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseRouting();
 
