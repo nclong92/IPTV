@@ -56,7 +56,7 @@ namespace WeatherForecastApi.Services
                 {
                     todayWeatherDetailVm.Add(new TodayWeatherDetailViewModel()
                     {
-                        Time = hourTmp,
+                        Time = $"{i}:00",
                         Temp = todayWeatherDetailVmTemp.Temp,
                         Icon = todayWeatherDetailVmTemp.Icon
                     });
@@ -65,7 +65,7 @@ namespace WeatherForecastApi.Services
                 {
                     var todayWeatherDetailVmTemp2 = new TodayWeatherDetailViewModel()
                     {
-                        Time = hourTmp,
+                        Time = $"{i}:00",
                         Temp = Math.Round(item.temp),
                         Icon = item.icon
                     };

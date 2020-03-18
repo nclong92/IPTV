@@ -34,11 +34,6 @@ namespace WeatherForecastApi.Code
         }
 
         public static string ResourceServer { get; set; }
-        public static string TimeSchedule { get; set; }
 
-        public static string Version { get; set; }
-        public static string Url { get; set; }
-        public static string Note { get; set; }
-        public static string PackageName { get; set; }
     }
 }

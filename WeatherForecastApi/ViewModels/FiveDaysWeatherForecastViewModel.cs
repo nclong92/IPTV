@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WeatherForecastApi.Code.Extensions;
 
 namespace WeatherForecastApi.ViewModels
 {
@@ -26,8 +27,14 @@ namespace WeatherForecastApi.ViewModels
         public double TempMax { get; set; }
         public double TempMin { get; set; }
         public string Icon { get; set; }
-        //public string IconURL { get { 
-        //    return } }
+        
+        public string IconUrl
+        {
+            get
+            {
+                return Icon.ToImageUrl();
+            }
+        }
 
     }
 
@@ -52,6 +59,14 @@ namespace WeatherForecastApi.ViewModels
         public string Description { get; set; }
         public double Temp { get; set; }
         public string Icon { get; set; }
+
+        public string IconUrl
+        {
+            get
+            {
+                return Icon.ToImageUrl();
+            }
+        }
     }
 
     public class TodayWeatherDetailViewModel
@@ -74,5 +89,13 @@ namespace WeatherForecastApi.ViewModels
         public string Time { get; set; }
         public double Temp { get; set; }
         public string Icon { get; set; }
+
+        public string IconUrl
+        {
+            get
+            {
+                return Icon.ToImageUrl();
+            }
+        }
     }
 }
