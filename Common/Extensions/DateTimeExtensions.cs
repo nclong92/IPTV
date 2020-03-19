@@ -27,11 +27,17 @@ namespace Common.Extensions
             long unixTimeStampInTicks = (dateTime.ToUniversalTime() - unixStart).Ticks;
             return (double)unixTimeStampInTicks / TimeSpan.TicksPerSecond;
         }
-        public static long DateTimeToUnixTimestampLong(this DateTime dateTime)
+
+        public static DateTime UnixTimestampToLocalDateTimeLong(this long unixTimeStamp)
         {
-            DateTime unixStart = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-            long unixTimeStampInTicks = (dateTime.ToUniversalTime() - unixStart).Ticks;
-            return (long)unixTimeStampInTicks / TimeSpan.TicksPerSecond;
+            // Unix timestamp is seconds past epoch
+            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+            return dtDateTime;
+        }
+        public static long LocalDateTimeToUnixTimestampLong(this DateTime dateTime)
+        {
+            return (long)(TimeZoneInfo.ConvertTimeToUtc(dateTime) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalSeconds;
         }
 
         public static DateTime ChangeTime(this DateTime dateTime, int hours, int minutes)
@@ -135,6 +141,11 @@ namespace Common.Extensions
         public static string ToViHour3(this DateTime dateTime)
         {
             return $"{dateTime.Hour.ToString("00")}:{dateTime.Minute.ToString("00")}";
+        }
+
+        public static string ToViHour4(this DateTime dateTime)
+        {
+            return dateTime.ToString("h tt");
         }
 
         static GregorianCalendar _gc = new GregorianCalendar();

@@ -9,5 +9,6 @@ namespace WeatherForecastApi.Interfaces
     public interface IWeatherForecastService
     {
         Task<WeatherForecastViewModel> GetWeatherForecastDetail();
+        Task<DarkSkyWeatherForecastViewModel> GetDarkSkyWeatherForecastDetail();
     }
 }

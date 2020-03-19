@@ -15,12 +15,18 @@ namespace WeatherForecastApi.Services
     {
         private readonly IAsyncRepository<WeatherData> _weatherDataRepository;
         private readonly IAsyncRepository<FiveDaysWeatherData> _fiveDaysWeatherDataRepository;
+        private readonly IAsyncRepository<DarkSkyWeather> _darkSkyWeatherRepository;
+        private readonly IAsyncRepository<DarkSkyDailyWeather> _darkSkyDailyWeatherRepository;
 
         public WeatherForecastService(IAsyncRepository<WeatherData> weatherDataRepository,
-            IAsyncRepository<FiveDaysWeatherData> fiveDaysWeatherDataRepository)
+            IAsyncRepository<FiveDaysWeatherData> fiveDaysWeatherDataRepository,
+            IAsyncRepository<DarkSkyWeather> darkSkyWeatherRepository,
+            IAsyncRepository<DarkSkyDailyWeather> darkSkyDailyWeatherRepository)
         {
             _weatherDataRepository = weatherDataRepository;
             _fiveDaysWeatherDataRepository = fiveDaysWeatherDataRepository;
+            _darkSkyWeatherRepository = darkSkyWeatherRepository;
+            _darkSkyDailyWeatherRepository = darkSkyDailyWeatherRepository;
         }
 
         public async Task<WeatherForecastViewModel> GetWeatherForecastDetail()
@@ -139,6 +145,50 @@ namespace WeatherForecastApi.Services
                 CurrentWeather = new CurrentWeatherViewModel(currentWeather),
                 TodayWeatherDetail = todayWeatherDetailVm,
                 DayWeather = dayWeatherVm
+            };
+        }
+
+        public async Task<DarkSkyWeatherForecastViewModel> GetDarkSkyWeatherForecastDetail()
+        {
+            string city = "HÀ Nội";
+            string countryCode = "VN";
+
+            var now = DateTime.Now;
+            var hourNow = now.Hour;
+            var nowStr = now.ToViDate3();
+            var now_unix = now.LocalDateTimeToUnixTimestampLong();
+
+            var todayStart = now.Date;
+            var todayStart_unix = todayStart.LocalDateTimeToUnixTimestampLong();
+
+            var tomorrowStart = todayStart.AddDays(1);
+            var tomorrowStart_unix = tomorrowStart.LocalDateTimeToUnixTimestampLong();
+
+            var currentWeatherSpec = new DarkSkyWeatherSpecification(todayStart_unix, now_unix, TodayType.Currently);
+            var currentWeathers = await _darkSkyWeatherRepository.ListAsync(currentWeatherSpec);
+            var currentWeather = currentWeathers.OrderByDescending(m => m.Id).FirstOrDefault();
+
+            var hourlyWeatherSpec = new DarkSkyWeatherSpecification(now_unix, tomorrowStart_unix - 1, TodayType.Hourly);
+            var hourlyWeathers = await _darkSkyWeatherRepository.ListAsync(hourlyWeatherSpec);
+
+            var todayWeatherDetail = new List<DarkSkyTodayWeatherDetailViewModel>();
+            todayWeatherDetail.Add(new DarkSkyTodayWeatherDetailViewModel()
+            {
+                Time = $"Now",
+                Temp = Math.Round(currentWeather.temperature),
+                Icon = currentWeather.icon
+            });
+
+            todayWeatherDetail.AddRange(DarkSkyTodayWeatherDetailViewModel.GetList(hourlyWeathers));
+
+            // get DarkSkyDayWeatherViewModel: darksky daily weather (7 day in week)
+
+
+            return new DarkSkyWeatherForecastViewModel()
+            {
+                CurrentWeather = new DarkSkyCurrentWeatherViewModel(currentWeather, city, countryCode),
+                TodayWeatherDetail = todayWeatherDetail,
+
             };
         }
     }

@@ -31,5 +31,19 @@ namespace WeatherForecastApi.Controllers
 
             return Ok(result);
         }
+
+        [Route("getdarkskyweather")]
+        [HttpGet]
+        public async Task<IActionResult> GetDarkSkyWeather()
+        {
+            var result = await _weatherForecastService.GetDarkSkyWeatherForecastDetail();
+
+            if (result == null)
+            {
+                return Ok("Error: Cannot get darksky api weather. Please try again later.");
+            }
+
+            return Ok(result);
+        }
     }
 }
