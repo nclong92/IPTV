@@ -1,7 +1,7 @@
-﻿@model WeatherForecastMVC.ViewModels.WeatherForecastViewModel
+﻿@model WeatherForecastMVC.ViewModels.DarkSkyWeatherForecastViewModel
 
 @{
-    ViewData["Title"] = "Weather";
+    ViewData["Title"] = "DarkSky Weather";
     //var currentWeather = Model.CurrentWeather;
 }
 
@@ -12,16 +12,29 @@
 
         #owl-demo .item img {
             display: block;
-            width: 100%;
+            width: 50%;
             height: auto;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .day-of-week-item{
+            width: 33%;
+            margin: auto;
+        }
+
+        .center{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
 </style>
 
 <br />
 <form method="get" enctype="multipart/form-data">
-    <div class="row mt-2 text-center">
-        <div class="col-md-8" style="border: 5px solid #F0F3F6;">
-            <div class=" mt-md-5 mb-md-5">
+    <div class="row mt text-center">
+        <div class="col-md-8 center" style="border: 5px solid #F0F3F6;">
+            <div class="mt-md-3 mb-md-3">
                 <div style="font-size: large;font-weight: 600">@Model.CurrentWeather.City, @Model.CurrentWeather.Country</div>
                 <div>@Model.CurrentWeather.Description</div>
                 <div style="font-size: 80px;">@Model.CurrentWeather.Temp&deg;</div>
@@ -31,24 +44,24 @@
                 {
                     <div style="border: 1px solid" class="item">
                         <div class="text-md-left" style="padding-left: 5px;">@todayWeather.Time</div>
-                        <div>@todayWeather.Temp&deg;C</div>
+                        <div style="font-size: 50px;font-weight:600">@todayWeather.Temp&deg;C</div>
                         <div><img src="@todayWeather.IconUrl" alt="icon" /></div>
                     </div>
                 }
             </div>
         </div>
-        <div class="col-md-4" style="border: 5px solid #F0F3F6;">
-            <table width="100%">
+        <div class="col-md-4 center" style="border: 5px solid #F0F3F6 ">
+            <div class="mt-md-3 mb-md-3">
                 @foreach (var item in Model.DayWeather)
                 {
-                    <tr class="text-center">
-                        <td>@item.DateDayOfWeek</td>
-                        <td>@item.TempMin&deg;C - @item.TempMax&deg;C</td>
-                        <td><img src="@item.IconUrl" alt="icon" /></td>
-                    </tr>
+                    <div class="d-flex flex-row mb-1">
+                        <div class="day-of-week-item">@item.DateDayOfWeek</div>
+                        <div class="day-of-week-item">@item.TempMin&deg;C - @item.TempMax&deg;C</div>
+                        <div class="day-of-week-item"><img src="@item.IconUrl" style="width: 50%" alt="icon" /></div>
+                    </div>
                 }
-
-            </table>
+            </div>
+                
         </div>
     </div>
 </form>

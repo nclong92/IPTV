@@ -24,5 +24,12 @@ namespace WeatherForecastMVC.Controllers
 
             return View(weatherForecastData);
         }
+
+        public async Task<IActionResult> Index1()
+        {
+            var weatherForecastData = await _weatherForecastService.GetDarkSkyWeatherForecast();
+
+            return View(weatherForecastData);
+        }
     }
 }

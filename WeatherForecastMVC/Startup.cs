@@ -25,8 +25,9 @@ namespace WeatherForecastMVC
         public void ConfigureServices(IServiceCollection services)
         {
             // Set static config
-            AppConstants.RESOURCE_SERVER = Configuration.GetValue<string>("RESOURCE_SERVER");
+            AppConstants.ResourceServer = Configuration.GetValue<string>("ResourceServer");
             AppConstants.WebApiHostUrl = Configuration.GetValue<string>("WebApiHostUrl");
+            AppConstants.DarkSkyWeatherApiHostUrl = Configuration.GetValue<string>("DarkSkyWeatherApiHostUrl");
 
             services.AddAppServices(Configuration);
             services.AddControllersWithViews();

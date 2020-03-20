@@ -7,7 +7,8 @@ namespace WeatherForecastMVC.Code
 {
     public class AppConstants
     {
-        public static string RESOURCE_SERVER { get; set; }
+        public static string ResourceServer { get; set; }
         public static string WebApiHostUrl { get; set; }
+        public static string DarkSkyWeatherApiHostUrl { get; set; }
     }
 }

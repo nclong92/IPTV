@@ -9,5 +9,6 @@ namespace WeatherForecastMVC.Interfaces
     public interface IWeatherForecastService
     {
         Task<WeatherForecastViewModel> GetWeatherForecast();
+        Task<DarkSkyWeatherForecastViewModel> GetDarkSkyWeatherForecast();
     }
 }

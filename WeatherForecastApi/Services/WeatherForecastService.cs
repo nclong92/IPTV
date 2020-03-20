@@ -150,7 +150,7 @@ namespace WeatherForecastApi.Services
 
         public async Task<DarkSkyWeatherForecastViewModel> GetDarkSkyWeatherForecastDetail()
         {
-            string city = "HÀ Nội";
+            string city = "Hà Nội";
             string countryCode = "VN";
 
             var now = DateTime.Now;
@@ -168,6 +168,11 @@ namespace WeatherForecastApi.Services
             var currentWeathers = await _darkSkyWeatherRepository.ListAsync(currentWeatherSpec);
             var currentWeather = currentWeathers.OrderByDescending(m => m.Id).FirstOrDefault();
 
+            if(currentWeather == null)
+            {
+                // 
+            }
+
             var hourlyWeatherSpec = new DarkSkyWeatherSpecification(now_unix, tomorrowStart_unix - 1, TodayType.Hourly);
             var hourlyWeathers = await _darkSkyWeatherRepository.ListAsync(hourlyWeatherSpec);
 
@@ -182,13 +187,16 @@ namespace WeatherForecastApi.Services
             todayWeatherDetail.AddRange(DarkSkyTodayWeatherDetailViewModel.GetList(hourlyWeathers));
 
             // get DarkSkyDayWeatherViewModel: darksky daily weather (7 day in week)
-
+            var dayNextWeek = now.AddDays(7);
+            var dayNextWeek_unix = dayNextWeek.LocalDateTimeToUnixTimestampLong();
+            var dailyWeatherSpec = new DarkSkyDailyWeatherSpecification(now_unix, dayNextWeek_unix);
+            var dailyWeathers = await _darkSkyDailyWeatherRepository.ListAsync(dailyWeatherSpec);
 
             return new DarkSkyWeatherForecastViewModel()
             {
                 CurrentWeather = new DarkSkyCurrentWeatherViewModel(currentWeather, city, countryCode),
                 TodayWeatherDetail = todayWeatherDetail,
-
+                DayWeather = DarkSkyDayWeatherViewModel.GetList(dailyWeathers)
             };
         }
     }

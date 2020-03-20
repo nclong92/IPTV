@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WeatherForecastApi.Code.Extensions;
+using WeatherForecastMVC.Code.Extensions;
 
-namespace WeatherForecastApi.ViewModels
+namespace WeatherForecastMVC.ViewModels
 {
     public class DarkSkyWeatherForecastViewModel
     {
@@ -66,8 +66,8 @@ namespace WeatherForecastApi.ViewModels
         {
             City = city;
             Country = countryCode;
-            Temp = Math.Round(darkSkyWeather.temperature);
-            Description = darkSkyWeather.summary.ToUpper();
+            Temp = darkSkyWeather.temperature;
+            Description = darkSkyWeather.summary;
             Icon = darkSkyWeather.icon;
         }
 

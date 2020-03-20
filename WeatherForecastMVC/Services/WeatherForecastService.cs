@@ -27,5 +27,16 @@ namespace WeatherForecastMVC.Services
 
             return apiResult;
         }
+
+        public async Task<DarkSkyWeatherForecastViewModel> GetDarkSkyWeatherForecast()
+        {
+            var uriString = "";
+            uriString = AppConstants.DarkSkyWeatherApiHostUrl;
+
+            var responseData = await HttpClientHelper.GetResponseFromUrl(uriString);
+            var apiResult = JsonConvert.DeserializeObject<DarkSkyWeatherForecastViewModel>(responseData);
+
+            return apiResult;
+        }
     }
 }
