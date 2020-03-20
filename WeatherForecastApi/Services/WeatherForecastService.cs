@@ -168,13 +168,12 @@ namespace WeatherForecastApi.Services
             var currentWeathers = await _darkSkyWeatherRepository.ListAsync(currentWeatherSpec);
             var currentWeather = currentWeathers.OrderByDescending(m => m.Id).FirstOrDefault();
 
-            if(currentWeather == null)
-            {
-                // 
-            }
+            if (currentWeather == null) return null;
 
             var hourlyWeatherSpec = new DarkSkyWeatherSpecification(now_unix, tomorrowStart_unix - 1, TodayType.Hourly);
             var hourlyWeathers = await _darkSkyWeatherRepository.ListAsync(hourlyWeatherSpec);
+
+            if (hourlyWeathers == null || hourlyWeathers.Count == 0) return null;
 
             var todayWeatherDetail = new List<DarkSkyTodayWeatherDetailViewModel>();
             todayWeatherDetail.Add(new DarkSkyTodayWeatherDetailViewModel()
@@ -191,6 +190,8 @@ namespace WeatherForecastApi.Services
             var dayNextWeek_unix = dayNextWeek.LocalDateTimeToUnixTimestampLong();
             var dailyWeatherSpec = new DarkSkyDailyWeatherSpecification(now_unix, dayNextWeek_unix);
             var dailyWeathers = await _darkSkyDailyWeatherRepository.ListAsync(dailyWeatherSpec);
+
+            if (dailyWeathers == null || dailyWeathers.Count == 0) return null;
 
             return new DarkSkyWeatherForecastViewModel()
             {

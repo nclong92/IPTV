@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,11 @@ namespace WeatherForecastMVC.Services
 {
     public class WeatherForecastService : IWeatherForecastService
     {
-        public WeatherForecastService()
-        {
+        private readonly ILogger<WeatherForecastService> _logger;
 
+        public WeatherForecastService(ILogger<WeatherForecastService> logger)
+        {
+            _logger = logger;
         }
 
         public async Task<WeatherForecastViewModel> GetWeatherForecast()
@@ -34,9 +37,21 @@ namespace WeatherForecastMVC.Services
             uriString = AppConstants.DarkSkyWeatherApiHostUrl;
 
             var responseData = await HttpClientHelper.GetResponseFromUrl(uriString);
-            var apiResult = JsonConvert.DeserializeObject<DarkSkyWeatherForecastViewModel>(responseData);
+            if (responseData == null || responseData.Trim() == "" || string.IsNullOrEmpty(responseData.Trim()))
+                return null;
 
-            return apiResult;
+            try
+            {
+                var apiResult = JsonConvert.DeserializeObject<DarkSkyWeatherForecastViewModel>(responseData);
+
+                return apiResult;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"GetDarkSkyWeatherForecast {ex.Message}");
+            }
+
+            return null;
         }
     }
 }
